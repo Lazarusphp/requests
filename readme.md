@@ -38,7 +38,7 @@ As shown above obtaining the user information can also be retrieved simply by ca
 
 By default apart from detecting if the value exists `Requests()` do not come with any out of the box validation `OOTB`, but can be accomplished by assigning a field rule.
 
-These can be assigned in any order folloding 'field()'
+These can be assigned in any order following 'field()'
 
 ### Assigning the rule.
 ```php
@@ -46,7 +46,7 @@ These can be assigned in any order folloding 'field()'
 ```
 
 
-These can be assigned in any order folloding 'field()'
+These can be assigned in any order following 'field()'
 
 ### Required value
 

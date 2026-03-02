@@ -1,0 +1,18 @@
+{
+    "name": "lazarusphp/requests",
+    "description": "Psr-7 compatible Requests Library",
+    "type": "library",
+    "license": "GPL-3.0",
+    "autoload": {
+        "psr-4": {
+            "Lazarusphp\\Requests\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "itzzpadre"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

@@ -95,12 +95,34 @@ $request->field("username")->required()->min(4)->max(20)->match("confirm_usernam
 $requests->field("username")->required()->min(4)->match("confirm_username")->match("confirm_email");
 ```
 
-## safe output
+## validate if Request is post or get.
 
-in certain situation such as pre submission of a form an input field may hold a value which would cause an undefined value error, this is resolved using the `$requests->safe()` method and can be done like so.
+Although the class automatically determines what the request is, it is recommended that any requests are also validated using the `post` or `get` methods, these values must return true or false.
 
 ```php
-echo '<input name='username' value="'.$requests->safe("username").'">
+
+// Any Get Requests would be rejected by this method.
+if($requests->post())
+{
+    echo "this is a post request";
+//    Add Code here
+}
+
+
+// Post requests would be rejected by this method
+if($requests->get())
+{
+    // Add Code here if the request is post"
+}
+
+```
+
+## safe output
+
+in certain situation such as pre submission of a form an input field may hold a value which would cause an undefined value error, this is resolved using the `$requests->safeField()` method and can be done like so.
+
+```php
+echo '<input name='username' value="'.$requests->safeField("username").'">
 ```
 
 This command will output the Request if one exists other wise will defaut to an empty string 

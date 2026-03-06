@@ -2,23 +2,27 @@
 
 namespace LazarusPhp\Requests;
 
+use App\Http\Kernel;
 use Exception;
-use Psr\Http\Message\ServerRequestInterface;
-use LazarusPhp\Requests\InternalServerRequests;
+use LazarusPhp\Foundation\Validation\FormRules;
+use LazarusPhp\Requests\Psr\PsrRequests;
 
 class Requests
 {
-    private InternalServerRequests $requests;
     private string $method = "";
     private string|null $currentField = null;
+    private object|null $requests = null;
+    private $field = null;
     private array $data = [];
     private array $flags = [];
 
+
     public function __construct()
-    {
-        $this->requests = new InternalServerRequests();
-        $this->method = $this->requests->getMethod();
-        ($this->method === "POST") ? $this->isPost() : $this->isGet();
+    {   
+        $psr = new PsrRequests();
+        $this->method = $psr->method();
+        $this->data = ($this->method === "POST") ? $psr->body() : $psr->query();
+        echo $this->method;
     }
 
 
@@ -27,7 +31,6 @@ class Requests
 
     public function safeField($value, $default = '')
     {
-
         return htmlspecialchars((string) $this->input($value, $default), ENT_COMPAT, 'UTF-8', false);
     }
 
@@ -35,6 +38,11 @@ class Requests
 
     public function field(string $field): self
     {
+        if($this->field === null){
+        $this->field = FormRules::create();
+        }
+        echo $this->field->field($field);
+
         $this->currentField = null;
         if (!array_key_exists($field, $this->data)) {
             throw new Exception("Field {$field} Does not exist");
@@ -164,7 +172,7 @@ class Requests
             throw new Exception("Request is not a Post Request");
         }
 
-        $this->data = $this->requests->getParsedBody();
+        $this->data = $this->requests->body();
         return $this;
     }
 
@@ -174,7 +182,7 @@ class Requests
             throw new Exception("This is not a Get Method");
         }
 
-        $this->data = $this->requests->getQueryParams() ?? [];
+        $this->data = $this->requests->query() ?? [];
         return $this;
     }
 
